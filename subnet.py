@@ -1,5 +1,4 @@
-import os
-import sys
+import sys #may use commandline arguments later
 import socket
 
 def inputInt(prompt):
