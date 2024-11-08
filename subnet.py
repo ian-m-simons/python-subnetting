@@ -1,4 +1,5 @@
 import sys #may use commandline arguments later
+import netifaces #going to switch to this later
 import socket
 
 def inputInt(prompt):
@@ -14,13 +15,21 @@ def inputInt(prompt):
 
 def getCurrentIPAddress():
     #currently only grabbing loopback address need to get IP Address associated with default route
-    hostname = socket.gethostname()
-    IPAddressList = socket.gethostbyname_ex(hostname)
-    print(IPAddressList)
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(0)
+    try:
+        s.connect(('192.168.0.1', 53))
+        IPAddress = s.getsockname()[0]
+    except:
+        IPAddress = '127.0.0.1'
+    finally:
+        s.close()
+    return IPAddress
 
 
 def subnetCurrentNetwork():
     IPAddress = getCurrentIPAddress()
+
 
 
 def main():
