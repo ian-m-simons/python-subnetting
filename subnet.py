@@ -46,9 +46,21 @@ def subnetByNetworks(Octets, netMask):
     if interestingOctet == 3:
         octetValue = 0
         while (octetValue < 256):
-            print(Octets[0], ".", Octets[1],".", Octets[2], ".", octetValue)
+            print(Octets[0], ".", Octets[1],".", Octets[2], ".", octetValue, "/", newNetMask)
             octetValue += 2 ** (8-addedBits)
-        print("each network will contain", 2**(8-addedBits), "addresses", (2**(8-addedBits))-2, "of which are useable") 
+        print("each network will contain", 2**(8-addedBits), "addresses", (2**(8-addedBits))-2, "of which are useable")
+    elif interestingOctet == 2:
+        octetValue = 0
+        while (octetValue < 256):
+            print(Octets[0], ".", Octets[1], ".", octetValue, ".", Octets[3], "/", newNetMask)
+            octetValue += 2** (8-addedBits)
+        print("each network will contain", (2**((8-addedBits)+8)), "addresses", (2**(((8-addedBits))+8))-2, "of which are useable")
+    elif interestingOctet == 1:
+        octetValue = 0
+        while (octetValue < 256):
+            print(Octets[0], ".", octetValue, ".", Octets[2], ".", Octets[3], "/", newNetMask)
+            octetValue += 2**(8-addedBits)
+        print("each network will contain", (2**((8-addedBits)+16)), "addresses", (2**((8-addedBits)+16))-2, "of which are useable")
 
 
 def currentNetwork():
