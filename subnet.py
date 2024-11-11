@@ -127,7 +127,7 @@ def differentNetwork():
 
 def main():
     while (True):
-        print("Welcome! Please select an option below")
+        print("Welcome! Please select an option below\nPlease note, at this time, this program only works with classful networks (ie /24, /16, and /8)")
         print("1) subnet current network")
         print("2) subnet a different network")
         print("3) exit")
