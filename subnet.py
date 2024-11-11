@@ -102,6 +102,7 @@ def subnetByNetworks(Octets, netMask):
 
 def currentNetwork():
     IPAddress = getCurrentIPAddress()
+    #TODO: implement functionality to subnet current network
     print(IPAddress)
 
 def differentNetwork():
