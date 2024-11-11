@@ -26,6 +26,30 @@ def getCurrentIPAddress():
         s.close()
     return IPAddress
 
+def subnetByNetworks(Octets, netMask):
+    
+    if netMask == 24:
+        interestingOctet = 3
+    elif netMask == 16:
+        interestingOctet = 2
+    elif netMask == 8:
+        interestingOctet = 1
+    else:
+        print("error, correct octet not found")
+    totalNetworks = inputInt("how many subnets would you like to create? ")
+    addedBits = 0
+    while ((2**addedBits) < totalNetworks):
+        addedBits += 1
+    print(addedBits)
+    newNetMask = netMask + addedBits
+    print("your new networks will be:")
+    if interestingOctet == 3:
+        octetValue = 0
+        while (octetValue < 256):
+            print(Octets[0], ".", Octets[1],".", Octets[2], ".", octetValue)
+            octetValue += 2 ** (8-addedBits)
+        print("each network will contain", 2**(8-addedBits), "addresses", (2**(8-addedBits))-2, "of which are useable") 
+
 
 def currentNetwork():
     IPAddress = getCurrentIPAddress()
@@ -35,18 +59,21 @@ def differentNetwork():
     IPAddress = input("Please enter your network ID and subnet mask in CIDR notation ")
     firstSplit = IPAddress.rsplit("/", 1)
     IPAddress = firstSplit[0]
-    netMask = firstSplit[1]
+    netMask = int(firstSplit[1])
     Octets = IPAddress.split(".")
+    for i in range(len(Octets)-1):
+        Octets[i] = int(Octets[i])
     print("select an option below")
     print("1) subnet based on desired number of networks")
     print("2) subnet based on desired number of addresses per network")
     choice = inputInt("option: ")
     if choice == 1:
         subnetByNetworks(Octets, netMask)
-    if choice == 2:
+    elif choice == 2:
         subnetByAddresses(Octets, netMask)
-
-
+    else:
+        print("error in different network function")
+        exit(0)
 
 
 def main():
