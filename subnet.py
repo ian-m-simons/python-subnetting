@@ -27,8 +27,25 @@ def getCurrentIPAddress():
     return IPAddress
 
 
-def subnetCurrentNetwork():
+def currentNetwork():
     IPAddress = getCurrentIPAddress()
+    print(IPAddress)
+
+def differentNetwork():
+    IPAddress = input("Please enter your network ID and subnet mask in CIDR notation ")
+    firstSplit = IPAddress.rsplit("/", 1)
+    IPAddress = firstSplit[0]
+    netMask = firstSplit[1]
+    Octets = IPAddress.split(".")
+    print("select an option below")
+    print("1) subnet based on desired number of networks")
+    print("2) subnet based on desired number of addresses per network")
+    choice = inputInt("option: ")
+    if choice == 1:
+        subnetByNetworks(Octets, netMask)
+    if choice == 2:
+        subnetByAddresses(Octets, netMask)
+
 
 
 
@@ -40,7 +57,9 @@ def main():
         print("3) exit")
         choice = inputInt("option: ")
         if choice == 1:
-            subnetCurrentNetwork()
+            currentNetwork()
+        elif choice == 2:
+            differentNetwork()
         elif choice == 3:
             break
 
