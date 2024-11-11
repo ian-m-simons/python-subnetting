@@ -39,19 +39,29 @@ def subnetByAddresses(Octets,netMask):
     if AddressCount > (2**(32 - netMask)):
         print("PEBCAK error: please seek help from your local administrator")
         exit(0)
-    if netMask == 24:
-        addedBits = 0
-        addressBits = 0
-        while (AddressCount > 2**addressBits):
-            addressBits += 1
-        addedBits = 8 - addressBits
-        newNetMask = netMask + addedBits
-        octetValue = 0
-        while (octetValue < 256):
+    networkBits = 0
+    addressBits = 0
+    while (AddressCount > 2**addressBits):
+        addressBits += 1
+    networkBits = 32 - addressBits
+    addedBits = networkBits % 8
+    newNetMask = networkBits
+    octetValue = 0
+    if AddressCount <= 254:
+        while octetValue < 256:
             print(Octets[0], ".", Octets[1], ".", Octets[2], ".", octetValue, "/", newNetMask)
             octetValue += 2**(8-addedBits)
-
-
+    elif AddressCount <= (2**16)-2:
+        while octetValue < 256:
+            print(Octets[0], ".", Octets[1], ".", octetValue, ".", Octets[3], "/", newNetMask)
+            octetValue += 2**(8-addedBits)
+    elif AddressCount <= (2**24)-2:
+        while octetValue < 256:
+            print(Octets[0], ".", octetValue, ".", Octets[2], ".", Octets[3], "/", newNetMask)
+            octetValue += 2**(8-addedBits)
+    else:
+        while octetValue < 256:
+            print(octetValue, ".", Octets[1], ".", Octets[2], ".", Octets[3], "/", newNetMask)
     
 def subnetByNetworks(Octets, netMask):
     
