@@ -47,6 +47,8 @@ def subnetByAddresses(Octets,netMask):
     addedBits = networkBits % 8
     newNetMask = networkBits
     octetValue = 0
+
+    #TODO create separate function to calculate all values of OctetValue and return it as a list, then run using for loops instead of while loops
     if AddressCount <= 254:
         while octetValue < 256:
             print(Octets[0], ".", Octets[1], ".", Octets[2], ".", octetValue, "/", newNetMask)
