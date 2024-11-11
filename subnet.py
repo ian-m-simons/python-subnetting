@@ -26,6 +26,33 @@ def getCurrentIPAddress():
         s.close()
     return IPAddress
 
+def subnetByAddresses(Octets,netMask):
+    if netMask == 24:
+        interestingOctet = 3
+    elif netMask == 16:
+        interestingOctet = 2
+    elif netMask == 8:
+        interestingOctet = 1
+    else:
+        print("error: correct octet not found")
+    AddressCount = inputInt("please enter the minimum number of addresses per network you want (must be less than the current number of addresses in network ")
+    if AddressCount > (2**(32 - netMask)):
+        print("PEBCAK error: please seek help from your local administrator")
+        exit(0)
+    if netMask == 24:
+        addedBits = 0
+        addressBits = 0
+        while (AddressCount > 2**addressBits):
+            addressBits += 1
+        addedBits = 8 - addressBits
+        newNetMask = netMask + addedBits
+        octetValue = 0
+        while (octetValue < 256):
+            print(Octets[0], ".", Octets[1], ".", Octets[2], ".", octetValue, "/", newNetMask)
+            octetValue += 2**(8-addedBits)
+
+
+    
 def subnetByNetworks(Octets, netMask):
     
     if netMask == 24:
