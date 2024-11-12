@@ -1,5 +1,5 @@
 import sys #may use commandline arguments later
-import netifaces #going to switch to this later
+import psutil #going to switch to this later
 import socket
 
 def inputInt(prompt):
