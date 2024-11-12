@@ -14,17 +14,24 @@ def inputInt(prompt):
     return response
 
 def getCurrentIPAddress():
-    #currently only grabbing loopback address need to get IP Address associated with default route
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.settimeout(0)
     try:
         s.connect(('192.168.0.1', 53))
-        IPAddress = s.getsockname()[0]
+        IPAddress = s.getsockname()[0]  
+        
+        # Now find the matching interface to get subnet mask
+        interfaces = psutil.net_if_addrs()
+        for interface, addrs in interfaces.items():
+            for addr in addrs:
+                # Check if this is an IPv4 address and matches our IP
+                if getattr(addr, 'family', None) == socket.AF_INET and addr.address == IPAddress:
+                    return addr.address, addr.netmask  # Return both IP and subnet mask
     except:
-        IPAddress = '127.0.0.1'
+        pass
     finally:
         s.close()
-    return IPAddress
+    return '127.0.0.1', '255.0.0.0'  # Default fallback values
 
 def subnetByAddresses(Octets,netMask):
     if netMask == 24:
@@ -103,9 +110,9 @@ def subnetByNetworks(Octets, netMask):
 
 
 def currentNetwork():
-    IPAddress = getCurrentIPAddress()
-    #TODO: implement functionality to subnet current network
-    print(IPAddress)
+    IPAddress, subnet_mask = getCurrentIPAddress()
+    print("IP Address: " + IPAddress)
+    print("Subnet Mask: " +  subnet_mask)
 
 def differentNetwork():
     IPAddress = input("Please enter your network ID and subnet mask in CIDR notation ")
