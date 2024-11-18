@@ -1,5 +1,5 @@
 import sys #may use commandline arguments later
-import psutil #going to switch to this later
+import psutil 
 import socket
 
 def inputInt(prompt):
@@ -18,8 +18,9 @@ def getCurrentIPAddress():
     s.settimeout(0)
     try:
         s.connect(('192.168.0.1', 53))
-        IPAddress = s.getsockname()[0]  
-        
+        IPAddress = s.getsockname()[0]
+
+         
         # Now find the matching interface to get subnet mask
         interfaces = psutil.net_if_addrs()
         for interface, addrs in interfaces.items():
@@ -27,6 +28,7 @@ def getCurrentIPAddress():
                 # Check if this is an IPv4 address and matches our IP
                 if getattr(addr, 'family', None) == socket.AF_INET and addr.address == IPAddress:
                     return addr.address, addr.netmask  # Return both IP and subnet mask
+        
     except:
         pass
     finally:
@@ -55,7 +57,6 @@ def subnetByAddresses(Octets,netMask):
     newNetMask = networkBits
     octetValue = 0
 
-    #TODO create separate function to calculate all values of OctetValue and return it as a list, then run using for loops instead of while loops
     if AddressCount <= 254:
         while octetValue < 256:
             print(Octets[0], ".", Octets[1], ".", Octets[2], ".", octetValue, "/", newNetMask)
@@ -110,9 +111,28 @@ def subnetByNetworks(Octets, netMask):
 
 
 def currentNetwork():
-    IPAddress, subnet_mask = getCurrentIPAddress()
-    print("IP Address: " + IPAddress)
-    print("Subnet Mask: " +  subnet_mask)
+    IPAddress = getCurrentIPAddress()
+    print("IP Address: ", IPAddress[0])
+    print("Subnet Mask: " +  IPAddress[1])
+    Octets = IPAddress[0].split(".")
+    rawNetMask = IPAddress[1].split(".")
+    netMask = 0
+    for i in range(len(rawNetMask)):
+        if (int(rawNetMask[i]) == 255):
+            netMask += 8
+    print("select an option below")
+    print("1) subnet based on desired number of networks")
+    print("2) subnet based on desired number of addresse per network")
+    choice = inputInt("option: ")
+    if choice == 1:
+        subnetByNetworks(Octets, netMask)
+    elif choice == 2:
+        subnetByAddresses(Octets, netMask)
+    else:
+        print("[Error] PEBCAK ERROR DETECTED")
+        exit(0)
+
+
 
 def differentNetwork():
     IPAddress = input("Please enter your network ID and subnet mask in CIDR notation ")
