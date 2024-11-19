@@ -122,7 +122,7 @@ def currentNetwork():
             netMask += 8
     print("select an option below")
     print("1) subnet based on desired number of networks")
-    print("2) subnet based on desired number of addresse per network")
+    print("2) subnet based on desired number of addresses per network")
     choice = inputInt("option: ")
     if choice == 1:
         subnetByNetworks(Octets, netMask)
